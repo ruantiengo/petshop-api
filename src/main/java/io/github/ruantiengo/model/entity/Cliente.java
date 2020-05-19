@@ -23,8 +23,8 @@ public class Cliente {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @Column(nullable = false, length = 50)
-    private String name;
+    @Column(length = 50, name = "nome")
+    private String nome;
 
     @Column(length = 11)
     private String cellphone;
@@ -33,7 +33,9 @@ public class Cliente {
     private String endereco;
 
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "cliente")
+    @JsonIgnore
     Set<Animal> animalList;
+
 
     @Column(name = "data_cadastro", updatable = false)
     @JsonFormat(pattern = "dd/MM/yyyy")

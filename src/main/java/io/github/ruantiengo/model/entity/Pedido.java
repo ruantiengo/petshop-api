@@ -28,6 +28,10 @@ public class Pedido {
     @JoinColumn(name = "id_cliente")
     private Cliente cliente;
 
+    @ManyToOne
+    @JoinColumn(name = "id_animal")
+    private Animal animal;
+
 
     @Column(name = "data_cadastro", updatable = false)
     @JsonFormat(pattern = "dd/MM/yyyy")

@@ -29,6 +29,7 @@ public class ClienteController {
     public Cliente salvar(@RequestBody Cliente cliente){
         return repository.save(cliente);
     }
+
     @PutMapping("{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void editar(@RequestBody Cliente clienteAtualizado,@PathVariable("id") Integer id){
@@ -37,12 +38,13 @@ public class ClienteController {
                 .map(cliente -> {
                     cliente.setCellphone(clienteAtualizado.getCellphone());
                     cliente.setEndereco(clienteAtualizado.getEndereco());
-                    cliente.setName(clienteAtualizado.getName());
+                    cliente.setNome(clienteAtualizado.getNome());
                     cliente.setAnimalList(clienteAtualizado.getAnimalList());
                     repository.save(cliente);
                     return Void.TYPE;
                 }).orElseThrow(()->new ResponseStatusException(HttpStatus.BAD_REQUEST));
     }
+
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletar(@PathVariable Integer id){
@@ -52,6 +54,7 @@ public class ClienteController {
                     return Void.TYPE;
                 }).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST));
     }
+
     @GetMapping
     List<Cliente> obterTodos(){
         return repository.findAll();
