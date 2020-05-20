@@ -12,9 +12,9 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 public class PedidoDTO {
-    private String id;
     private String description;
     private String valor;
+    private Integer idAnimal;
     private Integer idCliente;
     private String data;
 }
