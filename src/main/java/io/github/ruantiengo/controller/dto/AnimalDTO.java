@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 public class AnimalDTO {
     private String nome;
     private Integer idCliente;
-    private String description;
     private String tipoAnimal;
-
+    private String observacao;
 }

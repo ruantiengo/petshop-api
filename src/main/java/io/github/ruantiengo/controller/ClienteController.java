@@ -15,7 +15,7 @@ import java.util.List;
 @RequestMapping("cliente")
 @Builder
 @Data
-
+@CrossOrigin("*")
 public class ClienteController {
     @Autowired
     private final ClienteRepository repository;
@@ -59,6 +59,7 @@ public class ClienteController {
     List<Cliente> obterTodos(){
         return repository.findAll();
     }
+
     @GetMapping("{id}")
     public Cliente obterCliente(@PathVariable Integer id){
         return repository.findById(id)

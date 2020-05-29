@@ -1,6 +1,5 @@
 package io.github.ruantiengo.model.entity;
 
-import io.github.ruantiengo.model.Enum.TipoAnimal;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,9 +20,11 @@ public class Animal {
     @Column(nullable = false)
     private String nome;
 
-    private String description;
-    @Column(nullable = false)
-    private TipoAnimal tipoAnimal;
+    @Column
+    private String observacao;
+
+    @Column
+    private String tipoAnimal;
 
     @ManyToOne
     @JoinColumn(name =  "id_cliente")
