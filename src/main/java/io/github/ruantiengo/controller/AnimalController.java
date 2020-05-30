@@ -5,14 +5,12 @@ import io.github.ruantiengo.model.entity.Animal;
 import io.github.ruantiengo.model.entity.Cliente;
 import io.github.ruantiengo.model.repository.AnimalRepository;
 import io.github.ruantiengo.model.repository.ClienteRepository;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/animal")
@@ -44,6 +42,17 @@ public class    AnimalController {
         return animalRepository.findAll();
     }
 
+    @GetMapping({"{idCliente}/animais"})
+    public List<Animal> getAnimalbyIdCliente(@PathVariable Integer idCliente){
+        return clienteRepository.findById(idCliente)
+                .map(
+                        cliente -> {
+                            animalRepository.getAnimalsByCliente_Id(idCliente);
+                                    return cliente.getAnimalList();
+                        }
+                ).orElseThrow(()-> new ResponseStatusException(HttpStatus.BAD_REQUEST));
+    }
+
 
     @GetMapping("{id}")
     public Animal obterById(@PathVariable Integer id){
@@ -72,4 +81,5 @@ public class    AnimalController {
                     return Void.TYPE;
                 }).orElseThrow(()->new ResponseStatusException(HttpStatus.BAD_REQUEST));
     }
+
 }   

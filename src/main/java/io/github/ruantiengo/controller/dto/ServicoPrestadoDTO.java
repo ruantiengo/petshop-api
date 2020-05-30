@@ -11,7 +11,7 @@ import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
-public class PedidoDTO {
+public class ServicoPrestadoDTO {
     private String description;
     private String valor;
     private Integer idAnimal;

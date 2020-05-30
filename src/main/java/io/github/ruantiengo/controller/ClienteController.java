@@ -1,5 +1,6 @@
 package io.github.ruantiengo.controller;
 
+import io.github.ruantiengo.model.entity.Animal;
 import io.github.ruantiengo.model.entity.Cliente;
 import io.github.ruantiengo.model.repository.ClienteRepository;
 import lombok.Builder;
@@ -65,6 +66,13 @@ public class ClienteController {
         return repository.findById(id)
                 .map(cliente -> {
                     return cliente;
+                }).orElseThrow(()-> new ResponseStatusException(HttpStatus.NO_CONTENT));
+    }
+    @GetMapping("{id}/animais")
+    public List<Animal> obterAnimais(@PathVariable Integer id){
+        return repository.findById(id)
+                .map(cliente -> {
+                    return cliente.getAnimalList();
                 }).orElseThrow(()-> new ResponseStatusException(HttpStatus.NO_CONTENT));
     }
 

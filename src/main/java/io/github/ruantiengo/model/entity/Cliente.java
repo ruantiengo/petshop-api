@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
+
 
 @Entity
 @Data
@@ -34,12 +34,14 @@ public class Cliente {
 
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "cliente")
     @JsonIgnore
-    Set<Animal> animalList;
+    List<Animal> animalList;
 
 
     @Column(name = "data_cadastro", updatable = false)
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate dataCadastro;
+
+
 
     @PrePersist
     public void prePersist(){

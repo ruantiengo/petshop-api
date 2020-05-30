@@ -1,13 +1,13 @@
 package io.github.ruantiengo.controller;
 
 
-import io.github.ruantiengo.controller.dto.PedidoDTO;
+import io.github.ruantiengo.controller.dto.ServicoPrestadoDTO;
 import io.github.ruantiengo.model.entity.Animal;
 import io.github.ruantiengo.model.entity.Cliente;
-import io.github.ruantiengo.model.entity.Pedido;
+import io.github.ruantiengo.model.entity.ServicoPrestado;
 import io.github.ruantiengo.model.repository.AnimalRepository;
 import io.github.ruantiengo.model.repository.ClienteRepository;
-import io.github.ruantiengo.model.repository.PedidoRepository;
+import io.github.ruantiengo.model.repository.ServicoPrestadoRepository;
 import io.github.ruantiengo.util.BigDecimalConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,18 +19,20 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
-@RequestMapping("/pedido")
+@RequestMapping("/servico-prestado")
 @RequiredArgsConstructor
-public class PedidoController {
+@CrossOrigin("*")
+public class ServicoPrestadoController {
 
     private final ClienteRepository clienteRepository;
-    private final PedidoRepository pedidoRepository;
+    private final ServicoPrestadoRepository servicoPrestadoRepository;
     private final AnimalRepository animalRepository;
     private final BigDecimalConverter converter;
 
     @PostMapping
-    private Pedido salvar(@RequestBody PedidoDTO dto){
-        LocalDate data = LocalDate.parse(dto.getData(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+    @ResponseStatus(HttpStatus.CREATED)
+    private ServicoPrestado salvar(@RequestBody ServicoPrestadoDTO dto){
+
         Integer idCliente = dto.getIdCliente();
         Integer idAnimal = dto.getIdAnimal();
         Cliente cliente =
@@ -45,24 +47,24 @@ public class PedidoController {
                     .orElseThrow(()->
                             new ResponseStatusException(
                                     HttpStatus.BAD_REQUEST,"Animal não encontrado"));
-        Pedido pedido = new Pedido();
-        pedido.setCliente(cliente);
-        pedido.setDataCadastro(data);
-        pedido.setAnimal(animal);
-        pedido.setValor(converter.converter(dto.getValor()));
-        pedido.setDescription(dto.getDescription());
-        return pedidoRepository.save(pedido);
+        ServicoPrestado servicoPrestado = new ServicoPrestado();
+        servicoPrestado.setCliente(cliente);
+
+        servicoPrestado.setAnimal(animal);
+        servicoPrestado.setValor(converter.converter(dto.getValor()));
+        servicoPrestado.setDescription(dto.getDescription());
+        return servicoPrestadoRepository.save(servicoPrestado);
     }
 
     @GetMapping
-    List<Pedido> listarTodos(){
-        return pedidoRepository.findAll();
+    List<ServicoPrestado> listarTodos(){
+        return servicoPrestadoRepository.findAll();
     }
 
     @GetMapping("/pesquisar")
-    List<Pedido> pesquisar(
+    List<ServicoPrestado> pesquisar(
         @RequestParam(value = "nome", required = false, defaultValue = "") String nome
         ){
-        return pedidoRepository.findByNome("%" + nome);
+        return servicoPrestadoRepository.findByNome("%" + nome);
     }
 }

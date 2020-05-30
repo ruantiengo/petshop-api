@@ -1,5 +1,6 @@
 package io.github.ruantiengo.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -29,4 +30,6 @@ public class Animal {
     @ManyToOne
     @JoinColumn(name =  "id_cliente")
     private Cliente cliente;
+
+
 }
