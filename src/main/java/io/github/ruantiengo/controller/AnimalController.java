@@ -18,7 +18,7 @@ import java.util.Optional;
 @RequestMapping("/animal")
 @RequiredArgsConstructor
 @CrossOrigin("*")
-public class AnimalController {
+public class    AnimalController {
 
 
     private final AnimalRepository animalRepository;
@@ -61,5 +61,15 @@ public class AnimalController {
                     return Void.TYPE;
                 }).orElseThrow(()-> new ResponseStatusException(HttpStatus.NO_CONTENT));
     }
-
+    public void editar(@RequestBody Animal animalAtualizado,@PathVariable("id") Integer id){
+        animalRepository
+                .findById(id)
+                .map(animal -> {
+                    animal.setObservacao(animalAtualizado.getObservacao());
+                    animal.setNome(animalAtualizado.getNome());
+                    animal.setCliente(animalAtualizado.getCliente());
+                    animalRepository.save(animal);
+                    return Void.TYPE;
+                }).orElseThrow(()->new ResponseStatusException(HttpStatus.BAD_REQUEST));
+    }
 }   
