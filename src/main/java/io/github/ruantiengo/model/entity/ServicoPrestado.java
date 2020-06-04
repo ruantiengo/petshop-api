@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Data
@@ -22,7 +23,7 @@ public class ServicoPrestado {
 
     private String description;
 
-    private BigDecimal valor;
+    private BigDecimal valorTotal;
 
     @ManyToOne
     @JoinColumn(name = "id_cliente")
@@ -42,4 +43,8 @@ public class ServicoPrestado {
         setDataCadastro(LocalDate.now());
     }
 
+
+    @ManyToOne
+    @JoinColumn(name = "id_servico")
+    public Servico servico;
 }
