@@ -70,6 +70,7 @@ public class    AnimalController {
                     return Void.TYPE;
                 }).orElseThrow(()-> new ResponseStatusException(HttpStatus.NO_CONTENT));
     }
+    @PutMapping("{id}")
     public void editar(@RequestBody Animal animalAtualizado,@PathVariable("id") Integer id){
         animalRepository
                 .findById(id)
