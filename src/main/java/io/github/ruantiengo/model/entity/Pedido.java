@@ -23,7 +23,7 @@ public class Pedido {
 
     private String description;
 
-    private BigDecimal valorTotal;
+    private Double valor;
 
     @ManyToOne
     @JoinColumn(name = "id_cliente")
@@ -37,6 +37,11 @@ public class Pedido {
     @Column(name = "data_cadastro", updatable = false)
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate dataCadastro;
+
+    @ManyToMany
+    @JoinTable(name = "servicos_prestados", joinColumns = {@JoinColumn(name = "id_pedido")},
+            inverseJoinColumns = {@JoinColumn(name = "id_servico")})
+    private List<Servico> servicosPrestados;
 
     @PrePersist
     public void prePersist(){

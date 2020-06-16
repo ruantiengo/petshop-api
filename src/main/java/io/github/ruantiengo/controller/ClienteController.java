@@ -1,5 +1,6 @@
 package io.github.ruantiengo.controller;
 
+import io.github.ruantiengo.dto.ClienteDTO;
 import io.github.ruantiengo.model.entity.Animal;
 import io.github.ruantiengo.model.entity.Cliente;
 import io.github.ruantiengo.model.repository.ClienteRepository;
@@ -9,6 +10,7 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -19,6 +21,13 @@ import java.util.List;
 @RequiredArgsConstructor
 @CrossOrigin("*")
 public class ClienteController {
+
+    @Autowired
     private ClienteService service;
+
+    @PostMapping
+    public ResponseEntity<?> save(@RequestBody ClienteDTO dto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.salvar(dto));
+    }
 
 }

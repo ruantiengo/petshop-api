@@ -1,6 +1,6 @@
 package io.github.ruantiengo.controller;
 
-import io.github.ruantiengo.controller.dto.AnimalDTO;
+import io.github.ruantiengo.dto.AnimalDTO;
 import io.github.ruantiengo.model.entity.Animal;
 import io.github.ruantiengo.model.entity.Cliente;
 import io.github.ruantiengo.model.repository.AnimalRepository;
@@ -16,7 +16,7 @@ import java.util.List;
 @RequestMapping("/animal")
 @RequiredArgsConstructor
 @CrossOrigin("*")
-public class    AnimalController {
+public class AnimalController {
 
 
     private final AnimalRepository animalRepository;

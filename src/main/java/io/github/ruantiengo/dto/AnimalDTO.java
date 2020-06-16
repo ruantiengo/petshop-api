@@ -1,4 +1,4 @@
-package io.github.ruantiengo.controller.dto;
+package io.github.ruantiengo.dto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

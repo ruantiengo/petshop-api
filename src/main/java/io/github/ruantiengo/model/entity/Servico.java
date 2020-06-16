@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Builder
@@ -14,10 +15,14 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Servico {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String nome;
     private String descricao;
-    private BigDecimal valor;
+    private Double valor;
+
+    @ManyToMany(mappedBy = "servicosPrestados")
+    private List<Pedido> pedidos;
 }

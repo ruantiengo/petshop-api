@@ -1,14 +1,12 @@
-package io.github.ruantiengo.controller.dto;
+package io.github.ruantiengo.dto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.math.BigDecimal;
 
 @Data
 @NoArgsConstructor
 public class ServicoDTO {
     private String nome;
     private String descricao;
-    private String valor;
+    private Double valor;
 }

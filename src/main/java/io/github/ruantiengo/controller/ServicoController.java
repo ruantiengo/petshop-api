@@ -1,14 +1,10 @@
 package io.github.ruantiengo.controller;
 
-import io.github.ruantiengo.controller.dto.ServicoDTO;
-import io.github.ruantiengo.model.entity.Cliente;
 import io.github.ruantiengo.model.entity.Servico;
 import io.github.ruantiengo.model.repository.ServicoRepository;
 import io.github.ruantiengo.util.BigDecimalConverter;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

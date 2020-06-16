@@ -34,14 +34,12 @@ public class Cliente {
 
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "cliente")
     @JsonIgnore
-    List<Animal> animalList;
+    private List<Animal> animalList;
 
 
     @Column(name = "data_cadastro", updatable = false)
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate dataCadastro;
-
-
 
     @PrePersist
     public void prePersist(){
