@@ -12,7 +12,7 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-public class ServicoPrestadoDTO {
+public class PedidoDTO {
     private String description;
     private String valor;
     private Integer idServico;
