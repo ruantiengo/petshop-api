@@ -36,6 +36,10 @@ public class Cliente {
     @JsonIgnore
     private List<Animal> animalList;
 
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "cliente")
+    @JsonIgnore
+    private List<Pedido> pedidoList;
+
 
     @Column(name = "data_cadastro", updatable = false)
     @JsonFormat(pattern = "dd/MM/yyyy")

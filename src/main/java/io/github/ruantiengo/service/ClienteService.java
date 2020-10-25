@@ -1,5 +1,6 @@
 package io.github.ruantiengo.service;
 
+import io.github.ruantiengo.dto.AnimalDTO;
 import io.github.ruantiengo.dto.ClienteDTO;
 import io.github.ruantiengo.model.entity.Animal;
 import io.github.ruantiengo.model.entity.Cliente;
@@ -29,14 +30,12 @@ public class ClienteService {
         this.repository = repository;
     }
 
-    @Transactional
     public ClienteDTO salvar(@RequestBody ClienteDTO dto) {
         Cliente entity = dto.toEntity();
         if(dto.getDataCadastro() == null) dto.setDataCadastro(LocalDate.now());
         return ClienteDTO.create(repository.save(entity));
     }
 
-    @Transactional
     public ClienteDTO editar(ClienteDTO dto, Integer id){
         Cliente clienteEditado = repository
                 .findById(id)
@@ -49,7 +48,7 @@ public class ClienteService {
         return ClienteDTO.create(clienteEditado);
     }
 
-    @Transactional
+
     public void deletar(@PathVariable Integer id){
         repository.findById(id)
                 .map(cliente -> {
@@ -58,31 +57,34 @@ public class ClienteService {
                 }).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST));
     }
 
-    @Transactional(readOnly = true)
-    public List<ClienteDTO> obterTodos(){
+    public List<ClienteDTO> findAllClientes(){
         return createDTOList(repository.findAll());
     }
 
-    @Transactional
-    public Cliente obterCliente(@PathVariable Integer id){
-        return repository.findById(id)
-                .map(cliente -> {
-                    return cliente;
-                }).orElseThrow(()-> new ResponseStatusException(HttpStatus.NO_CONTENT));
+
+    public ClienteDTO findClienteById(@PathVariable Integer id){
+        Cliente entity = repository.findById(id).orElseThrow( () -> new RuntimeException("Erro") );
+        return ClienteDTO.create(entity);
     }
 
-    @Transactional
-    public List<Animal> obterAnimais(@PathVariable Integer id){
-        return repository.findById(id)
+    public List<AnimalDTO> obterAnimais(@PathVariable Integer id){
+         List<Animal> animalList = repository.findById(id)
                 .map(cliente -> {
                     return cliente.getAnimalList();
                 }).orElseThrow(()-> new ResponseStatusException(HttpStatus.NO_CONTENT));
+         return createDTOListAnimal(animalList);
     }
 
     private List<ClienteDTO> createDTOList(List<Cliente> clienteList) {
         List<ClienteDTO> dtoList = new ArrayList<>();
         for (Cliente c : clienteList)
             dtoList.add(ClienteDTO.create(c));
+        return dtoList;
+    }
+    private List<AnimalDTO> createDTOListAnimal(List<Animal> animalList) {
+        List<AnimalDTO> dtoList = new ArrayList<>();
+        for (Animal c : animalList)
+            dtoList.add(AnimalDTO.create(c));
         return dtoList;
     }
 
