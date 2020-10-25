@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
-import java.math.BigDecimal;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +28,7 @@ import java.util.List;
                     for (ItemPedido s : itensPedidos)
                         produtoList.add(s.getProduto().getNome());
                     return produtoList;
-                }, PedidoDTO::setItens);;
+                }, PedidoDTO::setItens);
                 mapper.map(src -> pedido.getCliente().getId(), PedidoDTO::setCliente);
             }).map(pedido);
         }

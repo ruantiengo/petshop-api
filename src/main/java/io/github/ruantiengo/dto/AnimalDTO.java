@@ -13,14 +13,21 @@ import org.modelmapper.ModelMapper;
 public class AnimalDTO {
     private Integer id;
     private String nome;
-    private Integer idCliente;
+    private Integer cliente;
     private String tipoAnimal;
     private String observacao;
-    private Cliente cliente;
-    public static AnimalDTO create(Animal animal){
+
+    public static AnimalDTO Create(Animal animal) {
         ModelMapper modelMapper = new ModelMapper();
-        return modelMapper.map(animal,AnimalDTO.class);
+        return modelMapper.createTypeMap(animal, AnimalDTO.class).addMappings(mapper -> {
+            mapper.map(mapa -> {
+                Cliente cliente = animal.getCliente();
+                return cliente;
+            }, AnimalDTO::setCliente);
+            mapper.map(src -> animal.getCliente().getId(), AnimalDTO::setCliente);
+        }).map(animal);
     }
+
     public Animal toEntity(){
         ModelMapper modelMapper = new ModelMapper();
         return modelMapper.map(this,Animal.class);

@@ -2,18 +2,15 @@ package io.github.ruantiengo.service;
 
 import io.github.ruantiengo.dto.ItemPedidoDTO;
 import io.github.ruantiengo.dto.PedidoDTO;
+import io.github.ruantiengo.exception.IdNotFoundException;
 import io.github.ruantiengo.model.entity.*;
 import io.github.ruantiengo.model.repository.ClienteRepository;
 import io.github.ruantiengo.model.repository.ItemPedidoRepository;
 import io.github.ruantiengo.model.repository.PedidoRepository;
 import io.github.ruantiengo.model.repository.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import javax.swing.text.html.parser.Entity;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,11 +30,12 @@ public class PedidoService {
         Integer idCliente = dto.getCliente();
         Pedido pedido = new Pedido();
         // Cliente Salvo
-        Cliente cliente = clienteRepository.findById(dto.getCliente()).orElseThrow( () -> new Exception());
+        Cliente cliente = clienteRepository.findById(dto.getCliente())
+                .orElseThrow( () -> new IdNotFoundException("Erro"));
         pedido.setCliente(cliente);
 
         // Outros saves
-        pedido.setStatus(StatusPedido.PENDENTE);;
+        pedido.setStatus(StatusPedido.PENDENTE);
 
         // Lista de Produtos
         List<ItemPedido> list = converterItems(pedido, dto.getItens());
@@ -48,11 +46,29 @@ public class PedidoService {
         return pedido;
     }
 
+    public List<PedidoDTO> getAll(){
+        return makePedidoDTOList(pedidoRepository.findAll());
+    }
+
+    public void delete(Integer id){
+        Pedido pedido = pedidoRepository.findById(id)
+                .orElseThrow( () -> new IdNotFoundException("Pedido não encontrado"));
+        pedidoRepository.delete(pedido);
+    }
+
     public PedidoDTO findById(Integer id) throws Exception {
-        Pedido entity = pedidoRepository.findById(id).orElseThrow( () -> new Exception("Cliente não encontrado"));
+        Pedido entity = pedidoRepository.findById(id)
+                .orElseThrow( () -> new IdNotFoundException("Cliente não encontrado"));
         return PedidoDTO.Create(entity);
     }
 
+    private List<PedidoDTO> makePedidoDTOList(List<Pedido> pedidoList){
+        List<PedidoDTO> pedidoDTOList = new ArrayList<>();
+        for (Pedido o: pedidoList) {
+            pedidoDTOList.add(PedidoDTO.Create(o));
+        }
+        return pedidoDTOList;
+    }
     private List<ItemPedido> converterItems(Pedido pedido, List<ItemPedidoDTO> items){
         return items
                 .stream()
@@ -69,7 +85,7 @@ public class PedidoService {
                 }).collect(Collectors.toList());
     }
     private Double getTotalPedido(List<ItemPedido> lista){
-        Double total = 0.0;
+        double total = 0.0;
         for (int i = 0; i < lista.size(); i++) {
             total = total + lista.get(i).getProduto().getPreco() * lista.get(i).getQuantidade();
         }

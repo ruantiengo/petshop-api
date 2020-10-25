@@ -2,18 +2,12 @@ package io.github.ruantiengo.controller;
 
 import io.github.ruantiengo.dto.AnimalDTO;
 import io.github.ruantiengo.dto.ClienteDTO;
-import io.github.ruantiengo.model.entity.Animal;
-import io.github.ruantiengo.model.entity.Cliente;
-import io.github.ruantiengo.model.repository.ClienteRepository;
 import io.github.ruantiengo.service.ClienteService;
-import lombok.Builder;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -22,8 +16,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ClienteController {
 
-    @Autowired
     private ClienteService service;
+
+    @Autowired
+    public ClienteController(ClienteService service) {
+        this.service = service;
+    }
 
     @PostMapping
     public ResponseEntity<ClienteDTO> save(@RequestBody ClienteDTO dto) {
@@ -51,7 +49,7 @@ public class ClienteController {
     }
 
     @GetMapping("{id}/animais")
-    public ResponseEntity<List<AnimalDTO>> listAnimalsPorId(@PathVariable Integer id){
+    public Respo    nseEntity<List<AnimalDTO>> listAnimalsPorId(@PathVariable Integer id){
         return ResponseEntity.status(HttpStatus.OK).body(service.obterAnimais(id));
     }
 

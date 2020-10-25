@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 
+@SuppressWarnings("JpaDataSourceORMInspection")
 @Entity
 @Data
 @Builder

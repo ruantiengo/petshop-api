@@ -1,17 +1,14 @@
 package io.github.ruantiengo.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.github.ruantiengo.model.repository.ClienteRepository;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
+@SuppressWarnings("JpaDataSourceORMInspection")
 @Entity
 @Data
 @NoArgsConstructor

@@ -10,7 +10,6 @@ import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -30,26 +29,26 @@ public class ClienteService {
         this.repository = repository;
     }
 
-    public ClienteDTO salvar(@RequestBody ClienteDTO dto) {
+    public ClienteDTO salvar(ClienteDTO dto) {
         Cliente entity = dto.toEntity();
         if(dto.getDataCadastro() == null) dto.setDataCadastro(LocalDate.now());
         return ClienteDTO.create(repository.save(entity));
     }
 
     public ClienteDTO editar(ClienteDTO dto, Integer id){
-        Cliente clienteEditado = repository
-                .findById(id)
-                .map(cliente -> {
-                    cliente.setCellphone(dto.getCellphone());
-                    cliente.setEndereco(dto.getEndereco());
-                    cliente.setNome(dto.getNome());
+            Cliente clienteEditado = repository
+                    .findById(id)
+                    .map(cliente -> {
+                        cliente.setCellphone(dto.getCellphone());
+                        cliente.setEndereco(dto.getEndereco());
+                        cliente.setNome(dto.getNome());
                     return repository.save(cliente);
                 }).orElseThrow(()->new ResponseStatusException(HttpStatus.BAD_REQUEST));
         return ClienteDTO.create(clienteEditado);
     }
 
 
-    public void deletar(@PathVariable Integer id){
+    public void deletar(Integer id){
         repository.findById(id)
                 .map(cliente -> {
                     repository.delete(cliente);
@@ -62,12 +61,12 @@ public class ClienteService {
     }
 
 
-    public ClienteDTO findClienteById(@PathVariable Integer id){
+    public ClienteDTO findClienteById(Integer id){
         Cliente entity = repository.findById(id).orElseThrow( () -> new RuntimeException("Erro") );
         return ClienteDTO.create(entity);
     }
 
-    public List<AnimalDTO> obterAnimais(@PathVariable Integer id){
+    public List<AnimalDTO> obterAnimais(Integer id){
          List<Animal> animalList = repository.findById(id)
                 .map(cliente -> {
                     return cliente.getAnimalList();
@@ -84,7 +83,7 @@ public class ClienteService {
     private List<AnimalDTO> createDTOListAnimal(List<Animal> animalList) {
         List<AnimalDTO> dtoList = new ArrayList<>();
         for (Animal c : animalList)
-            dtoList.add(AnimalDTO.create(c));
+            dtoList.add(AnimalDTO.Create(c));
         return dtoList;
     }
 
