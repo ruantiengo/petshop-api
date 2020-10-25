@@ -49,7 +49,7 @@ public class ClienteController {
     }
 
     @GetMapping("{id}/animais")
-    public Respo    nseEntity<List<AnimalDTO>> listAnimalsPorId(@PathVariable Integer id){
+    public ResponseEntity<List<AnimalDTO>> listAnimalsPorId(@PathVariable Integer id){
         return ResponseEntity.status(HttpStatus.OK).body(service.obterAnimais(id));
     }
 
