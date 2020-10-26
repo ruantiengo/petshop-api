@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class AnimalService {
     public ClienteRepository clienteRepository;
 
     @Transactional
-    public AnimalDTO salvar(AnimalDTO dto){
+    public AnimalDTO salvar( AnimalDTO dto){
         Cliente cliente = clienteRepository.findById(dto.getCliente())
                 .orElseThrow( () -> new IdNotFoundException("Cliente não encontrado"));
         Animal entity = dto.toEntity();

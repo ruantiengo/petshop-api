@@ -1,13 +1,14 @@
 package io.github.ruantiengo.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
-@SuppressWarnings("JpaDataSourceORMInspection")
 @Entity
 @Data
 @Builder
@@ -18,7 +19,7 @@ public class Animal {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false)
+    @Column
     private String nome;
 
     @Column
@@ -31,5 +32,7 @@ public class Animal {
     @JoinColumn(name =  "id_cliente")
     private Cliente cliente;
 
-
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "animal")
+    @JsonIgnore
+    private List<Pedido> pedidoList;
 }

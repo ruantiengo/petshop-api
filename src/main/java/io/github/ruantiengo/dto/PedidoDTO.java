@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +17,10 @@ import java.util.List;
     public class PedidoDTO {
 
     private Integer id;
+    @NotNull(message = "{campo.nome.obrigatorio}")
     private Integer cliente;
+    @NotNull(message = "{campo.animal.obrigatorio}")
+    private Integer animal;
     private double total;
     private List<ItemPedidoDTO> itens;
 
@@ -30,8 +35,10 @@ import java.util.List;
                     return produtoList;
                 }, PedidoDTO::setItens);
                 mapper.map(src -> pedido.getCliente().getId(), PedidoDTO::setCliente);
+                mapper.map(src -> pedido.getAnimal().getId(), PedidoDTO::setAnimal);
             }).map(pedido);
         }
+
     public Pedido toEntity(){
         ModelMapper modelMapper = new ModelMapper();
         return modelMapper.map(this,Pedido.class);

@@ -7,12 +7,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProdutoDTO {
     private Integer id;
+    @NotEmpty(message = "{campo.nome.obrigatorio}")
     private String nome;
+    @NotNull(message = "{campo.preco.obrigatorio}")
     private Double preco;
 
     public ProdutoDTO(Produto produto){

@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/pedido")
 public class PedidoController {
@@ -18,7 +20,7 @@ public class PedidoController {
     }
 
     @PostMapping
-    public Pedido save(@RequestBody PedidoDTO dto) throws Exception {
+    public Pedido save(@RequestBody @Valid PedidoDTO dto) throws Exception {
         return service.save(dto);
     }
     @GetMapping("{id}")

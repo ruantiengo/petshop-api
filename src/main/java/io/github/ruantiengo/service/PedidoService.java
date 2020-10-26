@@ -4,10 +4,7 @@ import io.github.ruantiengo.dto.ItemPedidoDTO;
 import io.github.ruantiengo.dto.PedidoDTO;
 import io.github.ruantiengo.exception.IdNotFoundException;
 import io.github.ruantiengo.model.entity.*;
-import io.github.ruantiengo.model.repository.ClienteRepository;
-import io.github.ruantiengo.model.repository.ItemPedidoRepository;
-import io.github.ruantiengo.model.repository.PedidoRepository;
-import io.github.ruantiengo.model.repository.ProdutoRepository;
+import io.github.ruantiengo.model.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +23,8 @@ public class PedidoService {
     ProdutoRepository produtoRepository;
     @Autowired
     ItemPedidoRepository itemPedidoRepository;
-
+    @Autowired
+    AnimalRepository animalRepository;
     @Transactional
     public Pedido save(PedidoDTO dto) throws Exception {
         Integer idCliente = dto.getCliente();
@@ -35,10 +33,12 @@ public class PedidoService {
         Cliente cliente = clienteRepository.findById(dto.getCliente())
                 .orElseThrow( () -> new IdNotFoundException("Erro"));
         pedido.setCliente(cliente);
-
+        // Animal Salvo
+        Animal animal =  animalRepository.findById(dto.getAnimal())
+                .orElseThrow( () -> new IdNotFoundException("Animal não encontrado"));
+        pedido.setAnimal(animal);
         // Outros saves
         pedido.setStatus(StatusPedido.PENDENTE);
-
         // Lista de Produtos
         List<ItemPedido> list = converterItems(pedido, dto.getItens());
         pedido.setTotal(getTotalPedido(list));
@@ -81,7 +81,7 @@ public class PedidoService {
                     Integer idProduto = dto.getProduto();
                     Produto produto = produtoRepository
                             .findById(idProduto)
-                            .orElseThrow( () -> new RuntimeException("Erro"));
+                            .orElseThrow( () -> new IdNotFoundException("Pedido não encontrado"));
                     ItemPedido itemPedido = new ItemPedido();
                     itemPedido.setQuantidade(dto.getQuantidade());
                     itemPedido.setPedido(pedido);

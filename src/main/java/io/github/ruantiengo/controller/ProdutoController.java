@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -19,7 +20,7 @@ public class ProdutoController {
     }
 
     @PostMapping
-    public ResponseEntity<ProdutoDTO> save(@RequestBody ProdutoDTO dto){
+    public ResponseEntity<ProdutoDTO> save(@RequestBody @Valid ProdutoDTO dto){
         return ResponseEntity.status(HttpStatus.CREATED).body(service.save(dto));
     }
 
@@ -38,7 +39,8 @@ public class ProdutoController {
         service.delete(id);
     }
     @PutMapping("{id}")
-    public ResponseEntity<ProdutoDTO> edit(@PathVariable Integer id, @RequestBody ProdutoDTO dto){
+    public ResponseEntity<ProdutoDTO> edit(@PathVariable Integer id, @RequestBody  @Valid
+            ProdutoDTO dto){
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(service.edit(id,dto));
     }
 }

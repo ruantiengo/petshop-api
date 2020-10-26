@@ -2,6 +2,7 @@ package io.github.ruantiengo.service;
 
 import io.github.ruantiengo.dto.AnimalDTO;
 import io.github.ruantiengo.dto.ClienteDTO;
+import io.github.ruantiengo.exception.IdNotFoundException;
 import io.github.ruantiengo.model.entity.Animal;
 import io.github.ruantiengo.model.entity.Cliente;
 import io.github.ruantiengo.model.repository.ClienteRepository;
@@ -11,9 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.event.TransactionalEventListener;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,11 +31,14 @@ public class ClienteService {
         this.repository = repository;
     }
 
+
     @Transactional
     public ClienteDTO salvar(ClienteDTO dto) {
         Cliente entity = dto.toEntity();
+        dto.setDataCadastro(entity.getDataCadastro());
         return new ClienteDTO(repository.save(entity));
     }
+
     @Transactional
     public ClienteDTO editar(ClienteDTO dto, Integer id){
             Cliente clienteEditado = repository
@@ -42,6 +46,7 @@ public class ClienteService {
                     .map(cliente -> {
                         cliente.setCellphone(dto.getCellphone());
                         cliente.setEndereco(dto.getEndereco());
+                        cliente.setCpf(dto.getCpf());
                         cliente.setNome(dto.getNome());
                     return repository.save(cliente);
                 }).orElseThrow(()->new ResponseStatusException(HttpStatus.BAD_REQUEST));
@@ -64,10 +69,9 @@ public class ClienteService {
 
     @Transactional(readOnly = true)
     public ClienteDTO findClienteById(Integer id){
-        Cliente entity = repository.findById(id).orElseThrow( () -> new RuntimeException("Erro") );
+        Cliente entity = repository.findById(id).orElseThrow( () -> new IdNotFoundException("Cliente não encontrado ") );
         return new ClienteDTO(entity);
     }
-
     @Transactional(readOnly = true)
     public List<AnimalDTO> obterAnimais(Integer id){
          List<Animal> animalList = repository.findById(id)
@@ -77,13 +81,14 @@ public class ClienteService {
          return createDTOListAnimal(animalList);
     }
 
-
+    @Transactional(readOnly = true)
     private List<ClienteDTO> createDTOList(List<Cliente> clienteList) {
         List<ClienteDTO> dtoList = new ArrayList<>();
         for (Cliente c : clienteList)
             dtoList.add(new ClienteDTO(c));
         return dtoList;
     }
+    @Transactional(readOnly = true)
     private List<AnimalDTO> createDTOListAnimal(List<Animal> animalList) {
         List<AnimalDTO> dtoList = new ArrayList<>();
         for (Animal c : animalList)

@@ -19,10 +19,14 @@ public class Pedido {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "cliente_id")
+    @JoinColumn(name = "cliente_id", updatable = false)
     private Cliente cliente;
 
-    @Column(name = "data_pedido")
+    @ManyToOne
+    @JoinColumn(name = "animal_id", updatable = false)
+    private Animal animal;
+
+    @Column(name = "data_pedido", updatable = false)
     private LocalDate dataPedido;
 
     private Double total;

@@ -7,14 +7,21 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class AnimalDTO {
     private Integer id;
+    @NotEmpty(message = "campo.nome.obrigatorio")
     private String nome;
+    @NotNull(message = "campo.cliente.obrigatorio")
     private Integer cliente;
+    @NotEmpty(message = "campo.tipoAnimal.obrigatorio")
     private String tipoAnimal;
+
     private String observacao;
 
     public AnimalDTO(Animal animal){

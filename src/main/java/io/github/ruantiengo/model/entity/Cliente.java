@@ -7,13 +7,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.br.CPF;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
 import java.util.List;
 
 
-@SuppressWarnings("JpaDataSourceORMInspection")
 @Entity
 @Data
 @Builder
@@ -24,13 +25,17 @@ public class Cliente {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @Column(length = 50, name = "nome")
+    @Column(length = 50)
+    @NotEmpty(message = "O nome é obrigatorio")
     private String nome;
 
-    @Column(length = 17)
+    @Column(length = 15)
     private String cellphone;
 
-    @Column
+    @CPF(message = "{campo.cpf.invalido}")
+    private String cpf;
+
+    @Column(length = 100)
     private String endereco;
 
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "cliente")
