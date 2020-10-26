@@ -17,15 +17,11 @@ public class AnimalDTO {
     private String tipoAnimal;
     private String observacao;
 
-    public static AnimalDTO Create(Animal animal) {
-        ModelMapper modelMapper = new ModelMapper();
-        return modelMapper.createTypeMap(animal, AnimalDTO.class).addMappings(mapper -> {
-            mapper.map(mapa -> {
-                Cliente cliente = animal.getCliente();
-                return cliente;
-            }, AnimalDTO::setCliente);
-            mapper.map(src -> animal.getCliente().getId(), AnimalDTO::setCliente);
-        }).map(animal);
+    public AnimalDTO(Animal animal){
+        this.id = animal.getId();
+        this.nome = animal.getNome();
+        this.tipoAnimal = animal.getTipoAnimal();
+        this.observacao = animal.getObservacao();
     }
 
     public Animal toEntity(){

@@ -9,7 +9,9 @@ import io.github.ruantiengo.model.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,20 +23,17 @@ public class AnimalService {
     @Autowired
     public ClienteRepository clienteRepository;
 
-
+    @Transactional
     public AnimalDTO salvar(AnimalDTO dto){
         Cliente cliente = clienteRepository.findById(dto.getCliente())
                 .orElseThrow( () -> new IdNotFoundException("Cliente não encontrado"));
-        Animal entity = new Animal();
+        Animal entity = dto.toEntity();
         entity.setCliente(cliente);
-        entity.setNome(dto.getNome());
-        entity.setObservacao(dto.getObservacao());
-        entity.setTipoAnimal(dto.getTipoAnimal());
         animalRepository.save(entity);
         dto.setId(entity.getId());
         return dto;
     }
-
+    @Transactional
     public AnimalDTO editar(AnimalDTO dto,Integer id){
         Animal entity = animalRepository
                 .findById(id)
@@ -44,29 +43,30 @@ public class AnimalService {
                     animal.setObservacao(dto.getObservacao());
                     return animalRepository.save(animal);
                 }).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST));
-                return AnimalDTO.Create(entity);
+                return new AnimalDTO(entity);
     }
-
+    @Transactional
     public void deletar(Integer id){
         Animal entity = animalRepository.findById(id).orElseThrow( () ->
                 new ResponseStatusException(HttpStatus.BAD_REQUEST));
         animalRepository.delete(entity);
     }
-
+    @Transactional(readOnly = true)
     public List<Animal> FindAllAnimais(){
         /*return createDTOListAnimal(animalRepository.findAll());*/
         // temporary solution
         return animalRepository.findAll();
     }
-
+    @Transactional(readOnly = true)
     public AnimalDTO findByIdAnimal(Integer id){
         Animal entity = animalRepository.findById(id).orElseThrow( () -> new IdNotFoundException("Erro"));
-        return AnimalDTO.Create(entity);
+        return new AnimalDTO(entity);
     }
+    @Transactional(readOnly = true)
     private List<AnimalDTO> createDTOListAnimal(List<Animal> animalList) {
         List<AnimalDTO> dtoList = new ArrayList<>();
         for (Animal c : animalList)
-            dtoList.add(AnimalDTO.Create(c));
+            dtoList.add(new AnimalDTO(c));
         return dtoList;
     }
 }

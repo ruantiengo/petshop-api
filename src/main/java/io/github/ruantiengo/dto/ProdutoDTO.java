@@ -15,9 +15,10 @@ public class ProdutoDTO {
     private String nome;
     private Double preco;
 
-    public static ProdutoDTO create(Produto produto){
-        ModelMapper modelMapper = new ModelMapper();
-        return modelMapper.map(produto,ProdutoDTO.class);
+    public ProdutoDTO(Produto produto){
+        this.id = produto.getId();
+        this.nome = produto.getNome();
+        this.preco = produto.getPreco();
     }
     public Produto toEntity(){
         ModelMapper modelMapper = new ModelMapper();

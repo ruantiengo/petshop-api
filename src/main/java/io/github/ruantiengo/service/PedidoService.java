@@ -10,6 +10,7 @@ import io.github.ruantiengo.model.repository.PedidoRepository;
 import io.github.ruantiengo.model.repository.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,7 @@ public class PedidoService {
     @Autowired
     ItemPedidoRepository itemPedidoRepository;
 
+    @Transactional
     public Pedido save(PedidoDTO dto) throws Exception {
         Integer idCliente = dto.getCliente();
         Pedido pedido = new Pedido();
@@ -46,16 +48,19 @@ public class PedidoService {
         return pedido;
     }
 
+    @Transactional(readOnly = true)
     public List<PedidoDTO> getAll(){
         return makePedidoDTOList(pedidoRepository.findAll());
     }
 
+    @Transactional
     public void delete(Integer id){
         Pedido pedido = pedidoRepository.findById(id)
                 .orElseThrow( () -> new IdNotFoundException("Pedido não encontrado"));
         pedidoRepository.delete(pedido);
     }
 
+    @Transactional(readOnly = true)
     public PedidoDTO findById(Integer id) throws Exception {
         Pedido entity = pedidoRepository.findById(id)
                 .orElseThrow( () -> new IdNotFoundException("Cliente não encontrado"));

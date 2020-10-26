@@ -20,9 +20,13 @@ public class ClienteDTO {
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate dataCadastro;
 
-    public static ClienteDTO create(Cliente cliente) {
-        ModelMapper modelMapper = new ModelMapper();
-        return modelMapper.map(cliente, ClienteDTO.class);
+
+
+    public ClienteDTO(Cliente cliente){
+        this.id = cliente.getId();
+        this.nome = cliente.getNome();
+        this.cellphone = cliente.getCellphone();
+        this.endereco = cliente.getEndereco();
     }
 
     public Cliente toEntity() {
