@@ -20,7 +20,7 @@ public class ClienteDTO {
     @NotEmpty(message = "{campo.nome.obrigatorio}")
     private String nome;
     @NotEmpty(message = "{campo.telefone.obrigatorio}")
-    private String cellphone;
+    private String telefone;
     @CPF(message = "{campo.cpf.invalido}")
     private String cpf;
     @NotEmpty(message = "{campo.endereco.obrigatorio}")
@@ -35,7 +35,7 @@ public class ClienteDTO {
         this.nome = cliente.getNome();
         this.cpf = cliente.getCpf();
         this.dataCadastro = cliente.getDataCadastro();
-        this.cellphone = cliente.getCellphone();
+        this.telefone = cliente.getTelefone();
         this.endereco = cliente.getEndereco();
     }
 

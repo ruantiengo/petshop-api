@@ -35,7 +35,6 @@ public class ClienteService {
     @Transactional
     public ClienteDTO salvar(ClienteDTO dto) {
         Cliente entity = dto.toEntity();
-        dto.setDataCadastro(entity.getDataCadastro());
         return new ClienteDTO(repository.save(entity));
     }
 
@@ -44,7 +43,7 @@ public class ClienteService {
             Cliente clienteEditado = repository
                     .findById(id)
                     .map(cliente -> {
-                        cliente.setCellphone(dto.getCellphone());
+                        cliente.setTelefone(dto.getTelefone());
                         cliente.setEndereco(dto.getEndereco());
                         cliente.setCpf(dto.getCpf());
                         cliente.setNome(dto.getNome());
@@ -81,14 +80,14 @@ public class ClienteService {
          return createDTOListAnimal(animalList);
     }
 
-    @Transactional(readOnly = true)
+
     private List<ClienteDTO> createDTOList(List<Cliente> clienteList) {
         List<ClienteDTO> dtoList = new ArrayList<>();
         for (Cliente c : clienteList)
             dtoList.add(new ClienteDTO(c));
         return dtoList;
     }
-    @Transactional(readOnly = true)
+
     private List<AnimalDTO> createDTOListAnimal(List<Animal> animalList) {
         List<AnimalDTO> dtoList = new ArrayList<>();
         for (Animal c : animalList)

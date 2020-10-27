@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/pedido")
+@RequestMapping("api/pedidos")
 public class PedidoController {
 
     private PedidoService service;

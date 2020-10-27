@@ -35,4 +35,9 @@ public class ControllerAdvice {
     public ApiErrors handleRollBackException(RollbackException ex){
         return new ApiErrors(ex.getLocalizedMessage());
     }
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiErrors handleIllegalArgumentException(IllegalArgumentException ex){
+        return new ApiErrors("Passado um argumento vazio");
+    }
 }

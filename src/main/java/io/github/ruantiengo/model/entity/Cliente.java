@@ -30,7 +30,7 @@ public class Cliente {
     private String nome;
 
     @Column(length = 15)
-    private String cellphone;
+    private String telefone;
 
     @CPF(message = "{campo.cpf.invalido}")
     private String cpf;

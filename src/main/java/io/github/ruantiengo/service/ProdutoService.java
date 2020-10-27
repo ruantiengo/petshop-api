@@ -6,9 +6,9 @@ import io.github.ruantiengo.model.entity.Produto;
 import io.github.ruantiengo.model.repository.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,12 +22,12 @@ public class ProdutoService {
         Produto entity = dto.toEntity();
         return new ProdutoDTO(repository.save(entity));
     }
-
+    @Transactional(readOnly = true)
     public ProdutoDTO findById(Integer id){
         Produto produto = repository.findById(id).orElseThrow( () -> new IdNotFoundException("Não encontrado"));
         return new ProdutoDTO(produto);
     }
-
+    @Transactional(readOnly = true)
     public List<ProdutoDTO> findAll(){
         return createListProdutoDTO(repository.findAll());
     }

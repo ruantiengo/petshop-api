@@ -1,6 +1,7 @@
 package io.github.ruantiengo.dto;
 import io.github.ruantiengo.model.entity.ItemPedido;
 import io.github.ruantiengo.model.entity.Pedido;
+import io.github.ruantiengo.validation.NotEmptyList;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,6 +23,7 @@ import java.util.List;
     @NotNull(message = "{campo.animal.obrigatorio}")
     private Integer animal;
     private double total;
+    @NotEmptyList(message = "Pedido sem itens")
     private List<ItemPedidoDTO> itens;
 
         public static PedidoDTO Create(Pedido pedido) {

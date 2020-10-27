@@ -1,5 +1,6 @@
 package io.github.ruantiengo.model.entity;
 
+import io.github.ruantiengo.validation.NotEmptyList;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -31,7 +31,7 @@ public class PedidoService {
         Pedido pedido = new Pedido();
         // Cliente Salvo
         Cliente cliente = clienteRepository.findById(dto.getCliente())
-                .orElseThrow( () -> new IdNotFoundException("Erro"));
+                .orElseThrow( () -> new IdNotFoundException("Cliente não encontrado"));
         pedido.setCliente(cliente);
         // Animal Salvo
         Animal animal =  animalRepository.findById(dto.getAnimal())
@@ -81,7 +81,7 @@ public class PedidoService {
                     Integer idProduto = dto.getProduto();
                     Produto produto = produtoRepository
                             .findById(idProduto)
-                            .orElseThrow( () -> new IdNotFoundException("Pedido não encontrado"));
+                            .orElseThrow( () -> new IdNotFoundException("Prduto não encontrado"));
                     ItemPedido itemPedido = new ItemPedido();
                     itemPedido.setQuantidade(dto.getQuantidade());
                     itemPedido.setPedido(pedido);

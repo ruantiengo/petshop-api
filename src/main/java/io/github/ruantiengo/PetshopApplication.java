@@ -1,12 +1,13 @@
 package io.github.ruantiengo;
 
+import io.github.ruantiengo.dto.UsuarioDTO;
+import io.github.ruantiengo.model.entity.Usuario;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class PetshopApplication {
     public static void main(String[] args) {
-
         SpringApplication.run(PetshopApplication.class,args);
     }
 }
