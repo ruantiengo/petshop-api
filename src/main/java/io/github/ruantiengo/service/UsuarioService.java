@@ -1,9 +1,9 @@
 package io.github.ruantiengo.service;
 
 
-import io.github.ruantiengo.dto.TokenDTO;
 import io.github.ruantiengo.dto.UsuarioDTO;
 import io.github.ruantiengo.exception.IdNotFoundException;
+import io.github.ruantiengo.exception.UsernameAlreadyExistsException;
 import io.github.ruantiengo.model.entity.Usuario;
 import io.github.ruantiengo.model.repository.UsuarioRepository;
 import io.github.ruantiengo.validation.SenhaInvalidaException;
@@ -27,6 +27,9 @@ public class UsuarioService implements UserDetailsService {
 
     @Transactional
     public UsuarioDTO save(UsuarioDTO dto){
+        if(usuarioRepository.existsByUsername(dto.getUsername())){
+            throw new UsernameAlreadyExistsException("O usuario já existe");
+        }
         Usuario usuario = new Usuario();
         usuario = dto.toEntity();
         usuarioRepository.save(usuario);

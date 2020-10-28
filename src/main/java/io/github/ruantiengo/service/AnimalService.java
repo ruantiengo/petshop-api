@@ -1,6 +1,7 @@
 package io.github.ruantiengo.service;
 
 import io.github.ruantiengo.dto.AnimalDTO;
+import io.github.ruantiengo.exception.AlreadyExistsException;
 import io.github.ruantiengo.exception.IdNotFoundException;
 import io.github.ruantiengo.model.entity.Animal;
 import io.github.ruantiengo.model.entity.Cliente;
@@ -30,6 +31,9 @@ public class AnimalService {
                 .orElseThrow( () -> new IdNotFoundException("Cliente não encontrado"));
         Animal entity = dto.toEntity();
         entity.setCliente(cliente);
+        if(verificaExistencia(entity.getCliente(),entity.getNome())){
+            throw new AlreadyExistsException("O Animal já existe, porfavor verifique os dados");
+        }
         animalRepository.save(entity);
         dto.setId(entity.getId());
         return dto;
@@ -63,11 +67,14 @@ public class AnimalService {
         Animal entity = animalRepository.findById(id).orElseThrow( () -> new IdNotFoundException("Erro"));
         return new AnimalDTO(entity);
     }
-    @Transactional(readOnly = true)
+
     private List<AnimalDTO> createDTOListAnimal(List<Animal> animalList) {
         List<AnimalDTO> dtoList = new ArrayList<>();
         for (Animal c : animalList)
             dtoList.add(new AnimalDTO(c));
         return dtoList;
+    }
+    private boolean verificaExistencia(Cliente cliente,String nome){
+        return animalRepository.existsByClienteAndNome(cliente,nome);
     }
 }

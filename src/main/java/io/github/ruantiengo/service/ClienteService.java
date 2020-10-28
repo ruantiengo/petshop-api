@@ -2,6 +2,7 @@ package io.github.ruantiengo.service;
 
 import io.github.ruantiengo.dto.AnimalDTO;
 import io.github.ruantiengo.dto.ClienteDTO;
+import io.github.ruantiengo.exception.AlreadyExistsException;
 import io.github.ruantiengo.exception.IdNotFoundException;
 import io.github.ruantiengo.model.entity.Animal;
 import io.github.ruantiengo.model.entity.Cliente;
@@ -35,6 +36,8 @@ public class ClienteService {
     @Transactional
     public ClienteDTO salvar(ClienteDTO dto) {
         Cliente entity = dto.toEntity();
+        if(verificaExistencia(entity.getNome(),entity.getTelefone()))
+            throw new AlreadyExistsException("O cliente já existe");
         return new ClienteDTO(repository.save(entity));
     }
 
@@ -93,5 +96,8 @@ public class ClienteService {
         for (Animal c : animalList)
             dtoList.add(new AnimalDTO(c));
         return dtoList;
+    }
+    private boolean verificaExistencia(String nome,String telefone){
+        return repository.existsByNomeAndTelefone(nome,telefone);
     }
 }

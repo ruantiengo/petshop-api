@@ -1,13 +1,13 @@
 package io.github.ruantiengo.service;
 
 import io.github.ruantiengo.dto.ProdutoDTO;
+import io.github.ruantiengo.exception.AlreadyExistsException;
 import io.github.ruantiengo.exception.IdNotFoundException;
 import io.github.ruantiengo.model.entity.Produto;
 import io.github.ruantiengo.model.repository.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +20,8 @@ public class ProdutoService {
     @Transactional
     public ProdutoDTO save(ProdutoDTO dto){
         Produto entity = dto.toEntity();
+        if(verificaExistencia(entity.getNome()))
+            throw new AlreadyExistsException("O produto já existe");
         return new ProdutoDTO(repository.save(entity));
     }
     @Transactional(readOnly = true)
@@ -55,5 +57,8 @@ public class ProdutoService {
             produtoDTOList.add(new ProdutoDTO(produto));
         }
         return produtoDTOList;
+    }
+    private boolean verificaExistencia(String nome){
+        return repository.existsByNome(nome);
     }
 }

@@ -2,6 +2,7 @@ package io.github.ruantiengo.service;
 
 import io.github.ruantiengo.dto.ItemPedidoDTO;
 import io.github.ruantiengo.dto.PedidoDTO;
+import io.github.ruantiengo.exception.AnimalNaoPertenceAoClienteException;
 import io.github.ruantiengo.exception.IdNotFoundException;
 import io.github.ruantiengo.model.entity.*;
 import io.github.ruantiengo.model.repository.*;
@@ -29,19 +30,23 @@ public class PedidoService {
     public Pedido save(PedidoDTO dto) throws Exception {
         Integer idCliente = dto.getCliente();
         Pedido pedido = new Pedido();
-        // Cliente Salvo
+
         Cliente cliente = clienteRepository.findById(dto.getCliente())
                 .orElseThrow( () -> new IdNotFoundException("Cliente não encontrado"));
         pedido.setCliente(cliente);
-        // Animal Salvo
+
         Animal animal =  animalRepository.findById(dto.getAnimal())
                 .orElseThrow( () -> new IdNotFoundException("Animal não encontrado"));
+
         pedido.setAnimal(animal);
-        // Outros saves
         pedido.setStatus(StatusPedido.PENDENTE);
-        // Lista de Produtos
         List<ItemPedido> list = converterItems(pedido, dto.getItens());
         pedido.setTotal(getTotalPedido(list));
+
+        //Verifica se animal salvo é o animal pertencente ao cliente
+        if(!cliente.getAnimalList().contains(animal)){
+            throw new AnimalNaoPertenceAoClienteException("Esse animal não pertence ao cliente");
+        }
         pedidoRepository.save(pedido);
         itemPedidoRepository.saveAll(list);
         pedido.setItens(list);

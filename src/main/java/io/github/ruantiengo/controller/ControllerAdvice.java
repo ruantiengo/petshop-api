@@ -1,8 +1,7 @@
 package io.github.ruantiengo.controller;
 
 
-import io.github.ruantiengo.exception.ApiErrors;
-import io.github.ruantiengo.exception.IdNotFoundException;
+import io.github.ruantiengo.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
@@ -39,5 +38,20 @@ public class ControllerAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiErrors handleIllegalArgumentException(IllegalArgumentException ex){
         return new ApiErrors("Passado um argumento vazio");
+    }
+    @ExceptionHandler(UsernameAlreadyExistsException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiErrors handleUsernameAlreadyExists(UsernameAlreadyExistsException ex){
+        return new ApiErrors(ex.getMessage());
+    }
+    @ExceptionHandler(AnimalNaoPertenceAoClienteException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiErrors handleAnimalNaoPertenceAoClienteException(AnimalNaoPertenceAoClienteException ex){
+        return new ApiErrors(ex.getMessage());
+    }
+    @ExceptionHandler(AlreadyExistsException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiErrors handleAlreadyExistsException(AlreadyExistsException ex){
+        return new ApiErrors(ex.getMessage());
     }
 }

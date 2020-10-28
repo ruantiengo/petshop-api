@@ -60,13 +60,6 @@ public class JwtService {
         }
     }
 
-    public static void main(String[] args) {
-        ConfigurableApplicationContext context = SpringApplication.run(PetshopApplication.class);
-        JwtService service = context.getBean(JwtService.class);
-        Usuario usuario = Usuario.builder().username("ruantiengo").build();
-        String token = service.gerarToken(usuario);
-        System.out.println(token);
-    }
     public String obterLoginUsuario(String token) throws ExpiredJwtException{
         return (String) obterClaims(token).getSubject();
     }
